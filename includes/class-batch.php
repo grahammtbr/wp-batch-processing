@@ -82,6 +82,12 @@ abstract class WP_Batch {
 	 */
 	abstract public function process( $item );
 
+	/**
+	 * Called when specific process is finished (all items were processed).
+	 * This method can be overriden in the process class.
+	 * @return void
+	 */
+	public function finish() {}
 
 	/**
 	 * Queues the item for processing.
@@ -186,7 +192,7 @@ abstract class WP_Batch {
 	public function get_percentage() {
 		$total_items     = $this->get_items_count();
 		$total_processed = $this->get_processed_count();
-		$percentage      = 100 - ( ( ( $total_items - $total_processed ) / $total_items ) * 100 );
+		$percentage      = ( ! empty( $total_items ) ) ? 100 - ( ( ( $total_items - $total_processed ) / $total_items ) * 100 ) : 0;
 
 		return number_format( (float) $percentage, 2, '.', '' );
 	}
